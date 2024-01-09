@@ -17,6 +17,7 @@ public class LoanCalc {
 		double rate = Double.parseDouble(args[1]);
 		int n = Integer.parseInt(args[2]);
 		System.out.println("Loan sum = " + loan + ", interest rate = " + rate + "%, periods = " + n);
+	
 		
 		// Computes the periodical payment using brute force search
 		System.out.print("Periodical payment, using brute force: ");
@@ -39,28 +40,68 @@ public class LoanCalc {
 	*/
 	// Side effect: modifies the class variable iterationCounter.
     public static double bruteForceSolver(double loan, double rate, int n, double epsilon) {  
-    	// Replace the following statement with your code
-    	return 0;
+    
+	double loanKeep = loan;	
+	double increment = 0.001;
+	double annualPay = 1;
+	iterationCounter = 0;
+
+	while (loan>=epsilon) {
+		loan = loanKeep;
+		for (int i=0; i<n; i++){
+			loan =(loan-annualPay)*((rate/100)+1);
+		}
+		annualPay += increment;
+		iterationCounter++;
+	}
+
+	if (annualPay > loanKeep) {
+		System.out.println("Failed to find a solution" + annualPay);
+	}
+		return annualPay;
     }
     
     /**
 	* Uses bisection search to compute an approximation of the periodical payment 
 	* that will bring the ending balance of a loan close to 0.
-	* Given: the sum of theloan, the periodical interest rate (as a percentage),
+	* Given: the sum of the loan, the periodical interest rate (as a percentage),
 	* the number of periods (n), and epsilon, a tolerance level.
 	*/
 	// Side effect: modifies the class variable iterationCounter.
     public static double bisectionSolver(double loan, double rate, int n, double epsilon) {  
-    	// Replace the following statement with your code
-    	return 0;
+    	double loanKeep = loan;	
+		double upperBound = loan; 
+		double lowerBound = 0;
+		double annualPay = 0;
+		iterationCounter = 0;
+
+	while (upperBound-lowerBound>=epsilon) {
+		annualPay = ((lowerBound+upperBound)/2);
+		loan = loanKeep;
+
+		if (endBalance(loan, rate, n, annualPay)>0){
+			lowerBound = annualPay;
+		}
+
+		if(endBalance(loan, rate, n, annualPay)<0){
+			upperBound= annualPay;
+		}
+
+		iterationCounter++;	
+	}
+
+	if (annualPay > loanKeep) {
+		System.out.println("Failed to find a solution" + annualPay);
+	}
+
+		return annualPay;
     }
 	
-	/**
-	* Computes the ending balance of a loan, given the sum of the loan, the periodical
-	* interest rate (as a percentage), the number of periods (n), and the periodical payment.
-	*/
-	private static double endBalance(double loan, double rate, int n, double payment) {
-		// Replace the following statement with your code
-    	return 0;
+	
+	private static double endBalance(double loan, double rate, int n, double annualPay) {
+		for (int i=0; i<n; i++){
+			loan =(loan-annualPay)*((rate/100)+1);
+		}
+    	return loan;
 	}
 }
