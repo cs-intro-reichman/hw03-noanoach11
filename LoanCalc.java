@@ -43,7 +43,7 @@ public class LoanCalc {
     
 	double loanKeep = loan;	
 	double increment = 0.001;
-	double annualPay = 1;
+	double annualPay = loan/n;
 	iterationCounter = 0;
 
 	while (loan>=epsilon) {
