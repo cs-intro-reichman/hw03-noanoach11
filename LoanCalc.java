@@ -43,10 +43,10 @@ public class LoanCalc {
     
 	double loanKeep = loan;	
 	double increment = 0.001;
-	double annualPay = loan/n;
+	double annualPay = (loan/n)+0.001;
 	iterationCounter = 0;
 
-	while (loan>=epsilon) {
+	while (loan>epsilon) {
 		loan = loanKeep;
 		for (int i=0; i<n; i++){
 			loan =(loan-annualPay)*((rate/100)+1);
